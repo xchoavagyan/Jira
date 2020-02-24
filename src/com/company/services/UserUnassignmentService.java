@@ -7,28 +7,25 @@ import java.sql.SQLException;
 
 import static com.company.models.DatabaseConstants.*;
 
-public class UserAssignmentService {
-    private static UserAssignmentService instance = null;
+public class UserUnassignmentService {
+    private static UserUnassignmentService instance = null;
 
-    private UserAssignmentService() {
+    private UserUnassignmentService() {
     }
 
-    public static UserAssignmentService getInstance() {
+    public static UserUnassignmentService getInstance() {
         if (instance == null)
-            instance = new UserAssignmentService();
+            instance = new UserUnassignmentService();
         return instance;
     }
-
-
-    public void assignTaskToUser(String userName, String taskName) {
+    public void unassignTaskToUser(String taskName){
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-            String query = "UPDATE tasks SET user_id = (SELECT users.id FROM users WHERE users.name=?), state = 'IN_PROGRESS' WHERE id=(SELECT tasks.id FROM tasks WHERE tasks.name=?)";
+            String query = "UPDATE tasks SET user_id = NULL , state = 'TO_DO' WHERE id=(SELECT tasks.id FROM tasks WHERE tasks.name=?)";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, userName);
-            preparedStatement.setString(2, taskName);
+            preparedStatement.setString(1,taskName);
             preparedStatement.executeUpdate();
             if (conn != null) {
-                System.out.println("User assigned");
+                System.out.println("User is unassigned");
             }
         } catch (SQLException ex) {
             System.out.println("An error occurred. Maybe user/password is invalid");

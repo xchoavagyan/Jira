@@ -1,68 +1,21 @@
-package com.company.menu;
+package com.company.creations;
 
 import com.company.controllers.TaskController;
 import com.company.controllers.UserAssignmentController;
 import com.company.controllers.UserController;
+import com.company.controllers.UserUnassignmentController;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Scanner;
-
-import static com.company.models.DatabaseConstants.*;
 
 public class DisplayMenu {
 
     public static void runMenu() {
-        try (Connection conn = DriverManager.getConnection(DB_URL_D, USER, PASSWORD)) {
-            String query = "CREATE DATABASE jira;";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.executeUpdate();
-            if (conn != null) {
-                System.out.println("Database Created");
-            }
-        } catch (SQLException ex) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
-            ex.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-            String createUsersTable = "CREATE TABLE users "+
-                    "(   id       int not null auto_increment,"+
-                    "    name     varchar(255),"+
-                    "    surname varchar(255),"+
-                    "    primary key (id));";
-            PreparedStatement preparedStatement = conn.prepareStatement(createUsersTable);
-            preparedStatement.executeUpdate();
-            if (conn != null) {
-                System.out.println("Table Users Created");
-            }
-        } catch (SQLException ex) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
-            ex.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-            String createTasksTable = "CREATE TABLE Tasks" +
-                    "(    id      int not null auto_increment," +
-                    "    name    varchar(255)," +
-                    "    state   enum ('TO_DO','IN_PROGRESS','IN_PREVIEW','DONE')," +
-                    "    user_id int,\n" +
-                    "    foreign key (user_id) references users (id)," +
-                    "    primary key (id));";
-            PreparedStatement preparedStatement = conn.prepareStatement(createTasksTable);
-            preparedStatement.executeUpdate();
-            if (conn != null) {
-                System.out.println("Table Tasks Created");
-            }
-        } catch (SQLException ex) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
-            ex.printStackTrace();
-        }
 
         Scanner scanner = new Scanner(System.in);
         UserController userController = UserController.getInstance();
         TaskController taskController = TaskController.getInstance();
         UserAssignmentController userAssignmentController = UserAssignmentController.getInstance();
+        UserUnassignmentController userUnassignmentController = UserUnassignmentController.getInstance();
         boolean whileLoop = true;
         while (whileLoop) {
             System.out.println("----------MENU----------");
@@ -88,7 +41,7 @@ public class DisplayMenu {
                             System.out.println(userController.findAllUsers());
                             break;
                         case 3:
-                            userController.findUserByID();
+                            System.out.println(userController.findUserByID());
                             break;
                         case 4:
                             userController.updateUser();
@@ -121,7 +74,7 @@ public class DisplayMenu {
                             System.out.println(taskController.findAllTasks());
                             break;
                         case 3:
-                            taskController.findTaskByID();
+                            System.out.println(taskController.findTaskByID());
                             break;
                         case 4:
                             taskController.updateTask();
@@ -140,6 +93,7 @@ public class DisplayMenu {
                     userAssignmentController.setAssignTaskToUser();
                     break;
                 case 4:
+                    userUnassignmentController.setUnassignTaskToUser();
                     break;
 
 

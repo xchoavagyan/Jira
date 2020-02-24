@@ -74,7 +74,7 @@ public class TaskService {
             while (resultSet.next()) {
                 Task task = new Task();
                 task.setName(resultSet.getString("name"));
-                task.setState(State.valueOf(resultSet.getString("duration")));
+                task.setState(State.valueOf(resultSet.getString("state")));
                 list.add(task);
             }
             if (conn != null) {

@@ -47,7 +47,8 @@ public class TaskController {
         int id = Integer.parseInt(scanner.nextLine());
         System.out.println("Please insert Task name : ");
         task.setName(scanner.nextLine());
-        task.setState(State.TO_DO);
+        System.out.println("Please insert task Statement");
+        task.setState(State.valueOf(scanner.nextLine()));
         taskService.update(id,task);
     }
 

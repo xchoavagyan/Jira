@@ -73,7 +73,7 @@ public class UserService {
             while (resultSet.next()) {
                 User user = new User();
                 user.setName(resultSet.getString("name"));
-                user.setSurname(resultSet.getString("duration"));
+                user.setSurname(resultSet.getString("surname"));
                 list.add(user);
             }
             if (conn != null) {
@@ -110,7 +110,7 @@ public class UserService {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
-            preparedStatement.setLong(3, id);
+            preparedStatement.setInt(3, id);
             flag = preparedStatement.execute();
             if (conn != null) {
                 System.out.println("Connected to the database");
